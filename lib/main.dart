@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 import 'screens/main_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -46,12 +47,14 @@ class _MyAppState extends State<MyApp> {
           labelLarge: TextStyle(fontSize: 14, color: Colors.green), // Boutons
         ),
       ),
-      darkTheme: ThemeData.dark().copyWith( // Theme Dark
-        scaffoldBackgroundColor: const Color(0xFF1E1E1E),
+      darkTheme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: AppColors.primary,
+        colorScheme: const ColorScheme.dark(
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
+        ),
         textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Color(0xFFE0E0E0)), // Texte blanc en mode sombre
-          headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.red), // Titres
-          labelLarge: TextStyle(fontSize: 14, color: Colors.green), // Boutons
+          bodyMedium: TextStyle(color: Colors.white),
         ),
       ),
       themeMode: ThemeMode.system, // Change automatiquement selon le système

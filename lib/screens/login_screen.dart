@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Connexion")),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(200),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -48,12 +48,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             if (_errorMessage.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(_errorMessage, style: const TextStyle(color: Colors.red)),
               ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+            ),
             ElevatedButton(
               onPressed: _login,
               child: const Text("Se connecter"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
             ),
             TextButton(
               onPressed: widget.onRegister,

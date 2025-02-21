@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../app_colors.dart';
 import '../home_page.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -58,84 +59,134 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.5), // Marge à gauche et à droite
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight), // Définit la hauteur de l'AppBar
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary, // Couleur de fond de l'AppBar
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).colorScheme.secondary, // Couleur de la bordure inférieure
+                width: 2.0, // Épaisseur de la bordure
+              ),
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent, // Transparent pour voir la couleur du Container
+            elevation: 0, // Supprime l'ombre
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CircleAvatar(
-                    backgroundColor: Colors.blueAccent,
-                    child: Icon(Icons.person, color: Colors.white),
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: AppColors.accent,
+                        child: Icon(Icons.person, color: Colors.white),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 23),
+                        child: Text(
+                          "Bonjour, Quentin",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23),
-                    child: Text(
-                      "Bonjour, Quentin",
-                      style: TextStyle(fontSize: 16, color: const Color(0xFFE0E0E0)),
-                    ),
+                  const Text('MyPlex'),
+                  Column(
+                    children: [
+                      Text(_currentTime, style: const TextStyle(fontSize: 16)),
+                      Text(_currentDate, style: const TextStyle(fontSize: 16)),
+                    ],
                   ),
                 ],
               ),
-              const Text('MyPlex'),
-              Column(
-                children: [
-                  Text(_currentTime, style: const TextStyle(fontSize: 16)),
-                  Text(_currentDate, style: const TextStyle(fontSize: 16)),
-                ],
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: _logout, // Déconnexion
               ),
             ],
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: _logout, // Déconnexion
-          ),
-        ],
       ),
 
       body: Row(
         children: [
-          // Navigation Rail (Sidebar)
-          NavigationRail(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            labelType: NavigationRailLabelType.all,
-            groupAlignment: -0.8,
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home),
-                label: Text('Accueil'),
+          // Navigation Rail (Sidebar) avec une bordure à droite
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                right: BorderSide(
+                  color: AppColors.secondary, // Couleur de la bordure
+                  width: 2, // Épaisseur de la bordure
+                ),
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.schedule_outlined),
-                selectedIcon: Icon(Icons.schedule),
-                label: Text('Rappels'),
+            ),
+            child: NavigationRail(
+              backgroundColor: AppColors.primary,
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              labelType: NavigationRailLabelType.all,
+              groupAlignment: -0.8,
+
+              // 🔹 Couleurs des icônes
+              selectedIconTheme: IconThemeData(
+                color: AppColors.accent,
+                size: 26,
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.newspaper_outlined),
-                selectedIcon: Icon(Icons.newspaper),
-                label: Text('Actus'),
+              unselectedIconTheme: IconThemeData(
+                color: AppColors.textSideBar,
+                size: 24,
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.settings_outlined),
-                selectedIcon: Icon(Icons.settings),
-                label: Text('Paramètres'),
+
+              // 🔹 Couleurs du texte
+              selectedLabelTextStyle: const TextStyle(
+                color: AppColors.accent,
               ),
-            ],
+              unselectedLabelTextStyle: TextStyle(
+                color: AppColors.textSideBar,
+              ),
+
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home),
+                  label: Text('Accueil'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.schedule_outlined),
+                  selectedIcon: Icon(Icons.schedule),
+                  label: Text('Rappels'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.newspaper_outlined),
+                  selectedIcon: Icon(Icons.newspaper),
+                  label: Text('Actus'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.settings_outlined),
+                  selectedIcon: Icon(Icons.settings),
+                  label: Text('Paramètres'),
+                ),
+              ],
+            ),
           ),
 
-          // Contenu principal
+          // Contenu principal avec une bordure à gauche
           Expanded(
-            child: _pages[_selectedIndex],
+            child: Container(
+              child: _pages[_selectedIndex],
+            ),
           ),
         ],
       ),
