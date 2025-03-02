@@ -16,6 +16,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  String? userName;
   int _selectedIndex = 0;
 
   // Liste des pages associées aux boutons de la sidebar
@@ -33,11 +34,21 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _initializeDate();
+    _loadUserData();
   }
 
   void _initializeDate() async {
     await initializeDateFormatting('fr_FR', null);
     _updateTime();
+  }
+
+  void _loadUserData() async {
+    Map<String, dynamic>? userData = await AuthService.getUserData();
+    if (userData != null) {
+      setState(() {
+        userName = userData['name'];
+      });
+    }
   }
 
   void _updateTime() {
@@ -88,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 23),
                         child: Text(
-                          "Bonjour, Quentin",
+                          "Bonjour, $userName",
                           style: TextStyle(
                             fontSize: 16,
                           ),
